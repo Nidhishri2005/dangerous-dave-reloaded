@@ -3,6 +3,15 @@
 > **"Explore. Survive. Collect."**  
 > *A New Adventure Begins*
 
+[![Play Live](https://img.shields.io/badge/PLAY_NOW-nidhishri2005.github.io%2Fdangerous--dave--reloaded-00f0ff?style=for-the-badge&logo=google-chrome&logoColor=black)](https://nidhishri2005.github.io/dangerous-dave-reloaded/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Live_Game-00e676?style=for-the-badge&logo=github)](https://nidhishri2005.github.io/dangerous-dave-reloaded/)
+
+### 🎮 [👉 CLICK HERE TO PLAY THE GAME IN YOUR BROWSER 👈](https://nidhishri2005.github.io/dangerous-dave-reloaded/)
+
+![Dangerous Dave: Reloaded](docs/preview.png)
+
+---
+
 A modern, responsive, and fair 2D browser platformer built from scratch with pure HTML5 Canvas and Web Audio API synthesis. Inspired by the spirit of classic retro adventure platformers, engineered without their frustrating pitfalls.
 
 ---
