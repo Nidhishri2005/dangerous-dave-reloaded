@@ -122,11 +122,17 @@ export class Settings {
   }
 
   show() {
-    if (this.modal) this.modal.classList.remove('hidden');
+    if (this.modal) {
+      this.modal.style.display = 'flex';
+      this.modal.classList.remove('hidden');
+    }
   }
 
   hide() {
-    if (this.modal) this.modal.classList.add('hidden');
+    if (this.modal) {
+      this.modal.style.display = 'none';
+      this.modal.classList.add('hidden');
+    }
   }
 }
 

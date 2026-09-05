@@ -5,7 +5,7 @@ import { Settings } from './ui/Settings.js';
 import { PauseMenu } from './ui/PauseMenu.js';
 import { audioManager } from './audio/AudioManager.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+function init() {
   const canvas = document.getElementById('game-canvas');
   if (!canvas) return;
 
@@ -89,5 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', unlockAudio);
   window.addEventListener('keydown', unlockAudio);
   window.addEventListener('touchstart', unlockAudio);
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 

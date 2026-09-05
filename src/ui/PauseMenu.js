@@ -45,11 +45,17 @@ export class PauseMenu {
   show(levelName, score) {
     if (this.levelNameElem) this.levelNameElem.textContent = levelName;
     if (this.scoreElem) this.scoreElem.textContent = `${score} PTS`;
-    if (this.modal) this.modal.classList.remove('hidden');
+    if (this.modal) {
+      this.modal.style.display = 'flex';
+      this.modal.classList.remove('hidden');
+    }
   }
 
   hide() {
-    if (this.modal) this.modal.classList.add('hidden');
+    if (this.modal) {
+      this.modal.style.display = 'none';
+      this.modal.classList.add('hidden');
+    }
   }
 }
 

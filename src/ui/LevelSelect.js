@@ -32,12 +32,14 @@ export class LevelSelect {
   show() {
     this.render();
     if (this.modal) {
+      this.modal.style.display = 'flex';
       this.modal.classList.remove('hidden');
     }
   }
 
   hide() {
     if (this.modal) {
+      this.modal.style.display = 'none';
       this.modal.classList.add('hidden');
     }
   }

@@ -185,16 +185,28 @@ export class Menu {
   }
 
   showLandingPage() {
-    if (this.landingPage) this.landingPage.classList.remove('hidden');
+    if (this.landingPage) {
+      this.landingPage.style.display = 'flex';
+      this.landingPage.classList.remove('hidden');
+    }
     const container = document.getElementById('game-container');
-    if (container) container.classList.add('hidden');
+    if (container) {
+      container.style.display = 'none';
+      container.classList.add('hidden');
+    }
     audioManager.stopBGM();
   }
 
   hideLandingPage() {
-    if (this.landingPage) this.landingPage.classList.add('hidden');
+    if (this.landingPage) {
+      this.landingPage.style.display = 'none';
+      this.landingPage.classList.add('hidden');
+    }
     const container = document.getElementById('game-container');
-    if (container) container.classList.remove('hidden');
+    if (container) {
+      container.style.display = 'flex';
+      container.classList.remove('hidden');
+    }
   }
 
   startIntroOrGame() {
@@ -204,7 +216,10 @@ export class Menu {
 
   showIntro() {
     this.currentIntroLine = 0;
-    if (this.introScreen) this.introScreen.classList.remove('hidden');
+    if (this.introScreen) {
+      this.introScreen.style.display = 'flex';
+      this.introScreen.classList.remove('hidden');
+    }
     this.displayIntroLine();
   }
 
@@ -236,7 +251,10 @@ export class Menu {
 
   finishIntro() {
     if (this.introTypingTimer) clearInterval(this.introTypingTimer);
-    if (this.introScreen) this.introScreen.classList.add('hidden');
+    if (this.introScreen) {
+      this.introScreen.style.display = 'none';
+      this.introScreen.classList.add('hidden');
+    }
     if (this.callbacks.onStartGame) this.callbacks.onStartGame(1);
   }
 
@@ -263,11 +281,17 @@ export class Menu {
   }
 
   showHowToPlay() {
-    if (this.modalHow) this.modalHow.classList.remove('hidden');
+    if (this.modalHow) {
+      this.modalHow.style.display = 'flex';
+      this.modalHow.classList.remove('hidden');
+    }
   }
 
   hideHowToPlay() {
-    if (this.modalHow) this.modalHow.classList.add('hidden');
+    if (this.modalHow) {
+      this.modalHow.style.display = 'none';
+      this.modalHow.classList.add('hidden');
+    }
   }
 
   showVictoryModal(stats) {
@@ -287,24 +311,32 @@ export class Menu {
       }
       if (this.statBonus) this.statBonus.textContent = `+${stats.bonus.toLocaleString()} PTS`;
 
+      this.modalVictory.style.display = 'flex';
       this.modalVictory.classList.remove('hidden');
     }
   }
 
   hideVictoryModal() {
-    if (this.modalVictory) this.modalVictory.classList.add('hidden');
+    if (this.modalVictory) {
+      this.modalVictory.style.display = 'none';
+      this.modalVictory.classList.add('hidden');
+    }
   }
 
   showGameOverModal(levelName, score) {
     if (this.modalGameOver) {
       if (this.gameoverScore) this.gameoverScore.textContent = score.toLocaleString();
       if (this.gameoverLevel) this.gameoverLevel.textContent = levelName;
+      this.modalGameOver.style.display = 'flex';
       this.modalGameOver.classList.remove('hidden');
     }
   }
 
   hideGameOverModal() {
-    if (this.modalGameOver) this.modalGameOver.classList.add('hidden');
+    if (this.modalGameOver) {
+      this.modalGameOver.style.display = 'none';
+      this.modalGameOver.classList.add('hidden');
+    }
   }
 }
 
