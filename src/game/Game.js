@@ -51,6 +51,7 @@ export class Game {
 
     this.lastTime = 0;
     this.accumulator = 0;
+    this.fixedDt = 1 / 60; // 60 FPS fixed physics step
     this.canvas.addEventListener('click', () => {
       if (this.state === 'MENU') {
         this.loadLevel(1);
@@ -145,7 +146,7 @@ export class Game {
     }
 
     if (this.state === 'PLAYING') {
-      this.accumulator += dt;
+      this.accumulator = Math.min(this.accumulator + dt, 0.2);
       while (this.accumulator >= this.fixedDt) {
         this.update(this.fixedDt);
         this.accumulator -= this.fixedDt;

@@ -61,73 +61,101 @@ class InputManager {
 
   onKeyDown(e) {
     // Prevent scrolling for game navigation keys
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+    const gameKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', ' '];
+    if (gameKeys.includes(e.code) || gameKeys.includes(e.key)) {
       e.preventDefault();
     }
 
-    if (!this.keysDown[e.code]) {
-      this.keysPressed[e.code] = true;
+    if (e.code) {
+      if (!this.keysDown[e.code]) {
+        this.keysPressed[e.code] = true;
+      }
+      this.keysDown[e.code] = true;
     }
-    this.keysDown[e.code] = true;
+
+    if (e.key) {
+      const k = e.key.toLowerCase();
+      if (!this.keysDown[k]) {
+        this.keysPressed[k] = true;
+      }
+      this.keysDown[k] = true;
+    }
   }
 
   onKeyUp(e) {
-    this.keysDown[e.code] = false;
+    if (e.code) {
+      this.keysDown[e.code] = false;
+    }
+    if (e.key) {
+      this.keysDown[e.key.toLowerCase()] = false;
+    }
   }
 
   isLeft() {
-    return (
+    return Boolean(
       this.keysDown['ArrowLeft'] ||
       this.keysDown['KeyA'] ||
+      this.keysDown['a'] ||
       this.touchStates.left
     );
   }
 
   isRight() {
-    return (
+    return Boolean(
       this.keysDown['ArrowRight'] ||
       this.keysDown['KeyD'] ||
+      this.keysDown['d'] ||
       this.touchStates.right
     );
   }
 
   isDown() {
-    return (
+    return Boolean(
       this.keysDown['ArrowDown'] ||
-      this.keysDown['KeyS']
+      this.keysDown['KeyS'] ||
+      this.keysDown['s']
     );
   }
 
   isJump() {
-    return (
+    return Boolean(
       this.keysDown['Space'] ||
+      this.keysDown[' '] ||
       this.keysDown['ArrowUp'] ||
       this.keysDown['KeyW'] ||
+      this.keysDown['w'] ||
       this.touchStates.jump
     );
   }
 
   isRun() {
-    return (
+    return Boolean(
       this.keysDown['ShiftLeft'] ||
       this.keysDown['ShiftRight'] ||
+      this.keysDown['shift'] ||
       this.keysDown['KeyZ'] ||
+      this.keysDown['z'] ||
       this.touchStates.run
     );
   }
 
   // One-shot edge-triggered checks
   wasJumpPressed() {
-    const pressed =
+    const pressed = Boolean(
       this.keysPressed['Space'] ||
+      this.keysPressed[' '] ||
       this.keysPressed['ArrowUp'] ||
       this.keysPressed['KeyW'] ||
-      this.touchPressed.jump;
+      this.keysPressed['w'] ||
+      this.touchPressed.jump
+    );
 
     if (pressed) {
       delete this.keysPressed['Space'];
+      delete this.keysPressed[' '];
       delete this.keysPressed['ArrowUp'];
       delete this.keysPressed['KeyW'];
+      delete this.keysPressed['w'];
       this.touchPressed.jump = false;
       return true;
     }
@@ -135,10 +163,15 @@ class InputManager {
   }
 
   wasPausePressed() {
-    const pressed = this.keysPressed['Escape'] || this.keysPressed['KeyP'];
+    const pressed = Boolean(
+      this.keysPressed['Escape'] ||
+      this.keysPressed['KeyP'] ||
+      this.keysPressed['p']
+    );
     if (pressed) {
       delete this.keysPressed['Escape'];
       delete this.keysPressed['KeyP'];
+      delete this.keysPressed['p'];
       return true;
     }
     return false;

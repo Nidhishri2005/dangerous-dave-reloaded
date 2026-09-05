@@ -4,6 +4,7 @@ import { LevelSelect } from './ui/LevelSelect.js';
 import { Settings } from './ui/Settings.js';
 import { PauseMenu } from './ui/PauseMenu.js';
 import { audioManager } from './audio/AudioManager.js';
+import { saveSystem } from './utils/SaveSystem.js';
 
 function init() {
   const canvas = document.getElementById('game-canvas');
@@ -20,13 +21,20 @@ function init() {
   // Level Select Controller
   const levelSelect = new LevelSelect((levelNumber) => {
     menu.hideLandingPage();
+    canvas.focus();
     game.loadLevel(levelNumber);
   });
 
   // Pause Menu Controller
   const pauseMenu = new PauseMenu({
-    onResume: () => game.resume(),
-    onRestart: () => game.restartCurrentLevel(),
+    onResume: () => {
+      canvas.focus();
+      game.resume();
+    },
+    onRestart: () => {
+      canvas.focus();
+      game.restartCurrentLevel();
+    },
     onSettings: () => settings.show(),
     onMenu: () => {
       game.state = 'MENU';
@@ -37,6 +45,7 @@ function init() {
   // Main Menu & Modals Controller
   const menu = new Menu({
     onStartGame: (levelNumber = 1) => {
+      canvas.focus();
       game.loadLevel(levelNumber);
     },
     onSelectLevel: () => {
@@ -46,9 +55,11 @@ function init() {
       settings.show();
     },
     onNextLevel: () => {
+      canvas.focus();
       game.nextLevel();
     },
     onReplayLevel: () => {
+      canvas.focus();
       game.restartCurrentLevel();
     },
   });
@@ -69,7 +80,9 @@ function init() {
   // Pause button in HUD
   const btnPauseToggle = document.getElementById('btn-pause-toggle');
   if (btnPauseToggle) {
-    btnPauseToggle.addEventListener('click', () => {
+    btnPauseToggle.addEventListener('click', (e) => {
+      btnPauseToggle.blur();
+      canvas.focus();
       game.togglePause();
     });
   }
@@ -78,14 +91,19 @@ function init() {
   const btnArcadePlay = document.getElementById('btn-arcade-play');
   if (btnArcadePlay) {
     btnArcadePlay.addEventListener('click', () => {
+      btnArcadePlay.blur();
+      canvas.focus();
       unlockAudio();
-      game.loadLevel(1);
+      if (game.state !== 'PLAYING') {
+        game.loadLevel(1);
+      }
     });
   }
 
   const btnArcadeLevels = document.getElementById('btn-arcade-levels');
   if (btnArcadeLevels) {
     btnArcadeLevels.addEventListener('click', () => {
+      btnArcadeLevels.blur();
       unlockAudio();
       levelSelect.show();
     });
@@ -94,6 +112,7 @@ function init() {
   const btnArcadeSettings = document.getElementById('btn-arcade-settings');
   if (btnArcadeSettings) {
     btnArcadeSettings.addEventListener('click', () => {
+      btnArcadeSettings.blur();
       unlockAudio();
       settings.show();
     });
@@ -102,6 +121,7 @@ function init() {
   const btnArcadeHow = document.getElementById('btn-arcade-how');
   if (btnArcadeHow) {
     btnArcadeHow.addEventListener('click', () => {
+      btnArcadeHow.blur();
       unlockAudio();
       menu.showHowToPlay();
     });
@@ -110,6 +130,8 @@ function init() {
   const btnArcadeRestart = document.getElementById('btn-arcade-restart');
   if (btnArcadeRestart) {
     btnArcadeRestart.addEventListener('click', () => {
+      btnArcadeRestart.blur();
+      canvas.focus();
       unlockAudio();
       game.restartCurrentLevel();
     });
@@ -120,16 +142,16 @@ function init() {
     // Keep canvas 960x540 internal buffer, CSS handles presentation
   });
 
-  // Unlock Audio on initial user interaction
+  // Unlock Audio on initial user interaction & start title/adventure music
   const unlockAudio = () => {
     audioManager.initContext();
-    window.removeEventListener('click', unlockAudio);
-    window.removeEventListener('keydown', unlockAudio);
-    window.removeEventListener('touchstart', unlockAudio);
+    if (saveSystem.getSettings().music && !audioManager.isBgmPlaying) {
+      audioManager.startBGM(game.level ? game.level.theme : 'adventure');
+    }
   };
-  window.addEventListener('click', unlockAudio);
-  window.addEventListener('keydown', unlockAudio);
-  window.addEventListener('touchstart', unlockAudio);
+  window.addEventListener('click', unlockAudio, { once: true });
+  window.addEventListener('keydown', unlockAudio, { once: true });
+  window.addEventListener('touchstart', unlockAudio, { once: true });
 }
 
 if (document.readyState === 'loading') {

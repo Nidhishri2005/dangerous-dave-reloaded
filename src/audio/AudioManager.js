@@ -20,7 +20,7 @@ class AudioManager {
   initContext() {
     if (this.ctx) {
       if (this.ctx.state === 'suspended') {
-        this.ctx.resume();
+        this.ctx.resume().catch(() => {});
       }
       return;
     }
@@ -32,14 +32,14 @@ class AudioManager {
       this.ctx = new AudioContextClass();
 
       this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.setValueAtTime(0.5, this.ctx.currentTime);
+      this.masterGain.gain.setValueAtTime(0.8, this.ctx.currentTime);
       this.masterGain.connect(this.ctx.destination);
 
       this.sfxGain = this.ctx.createGain();
       this.sfxGain.connect(this.masterGain);
 
       this.musicGain = this.ctx.createGain();
-      this.musicGain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+      this.musicGain.gain.setValueAtTime(0.45, this.ctx.currentTime);
       this.musicGain.connect(this.masterGain);
 
       this.updateVolumes();
@@ -52,17 +52,17 @@ class AudioManager {
     if (!this.ctx) {
       this.initContext();
     } else if (this.ctx.state === 'suspended') {
-      this.ctx.resume();
+      this.ctx.resume().catch(() => {});
     }
   }
 
   updateVolumes() {
     const settings = saveSystem.getSettings();
     if (this.sfxGain && this.ctx) {
-      this.sfxGain.gain.setValueAtTime(settings.sound ? 0.6 : 0, this.ctx.currentTime);
+      this.sfxGain.gain.setValueAtTime(settings.sound ? 0.85 : 0, this.ctx.currentTime);
     }
     if (this.musicGain && this.ctx) {
-      this.musicGain.gain.setValueAtTime(settings.music ? 0.22 : 0, this.ctx.currentTime);
+      this.musicGain.gain.setValueAtTime(settings.music ? 0.45 : 0, this.ctx.currentTime);
     }
   }
 
@@ -350,7 +350,7 @@ class AudioManager {
         osc.type = theme === 'factory' ? 'sawtooth' : 'triangle';
         osc.frequency.setValueAtTime(freq, now);
 
-        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.setValueAtTime(0.22, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + (tempoMs / 1000) * 0.9);
 
         osc.connect(gain);
@@ -363,9 +363,9 @@ class AudioManager {
         if (isBass) {
           const bassOsc = this.ctx.createOscillator();
           const bassGain = this.ctx.createGain();
-          bassOsc.type = 'sine';
+          bassOsc.type = 'triangle';
           bassOsc.frequency.setValueAtTime(currentScale[0] / 2, now);
-          bassGain.gain.setValueAtTime(0.16, now);
+          bassGain.gain.setValueAtTime(0.3, now);
           bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
 
           bassOsc.connect(bassGain);

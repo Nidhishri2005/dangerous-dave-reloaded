@@ -576,6 +576,11 @@ body {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
+  outline: none;
+}
+
+#game-canvas:focus {
+  outline: none;
 }
 
 .scanline-effect {
@@ -1141,7 +1146,7 @@ kbd {
 
       <!-- CANVAS VIEWPORT -->
       <div id="canvas-wrapper" class="canvas-wrapper">
-        <canvas id="game-canvas" width="960" height="540"></canvas>
+        <canvas id="game-canvas" width="960" height="540" tabindex="0"></canvas>
         <div id="scanline-overlay" class="scanline-effect"></div>
 
         <!-- DEATH BANNER / RESPAWN OVERLAY -->

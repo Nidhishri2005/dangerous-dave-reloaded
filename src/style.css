@@ -565,6 +565,11 @@ body {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
+  outline: none;
+}
+
+#game-canvas:focus {
+  outline: none;
 }
 
 .scanline-effect {

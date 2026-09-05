@@ -54,7 +54,12 @@ export class Settings {
       this.toggleMusic.addEventListener('change', (e) => {
         saveSystem.updateSettings({ music: e.target.checked });
         audioManager.updateVolumes();
-        if (!e.target.checked) audioManager.stopBGM();
+        if (e.target.checked) {
+          audioManager.ensureContext();
+          audioManager.startBGM(audioManager.currentTrack || 'adventure');
+        } else {
+          audioManager.stopBGM();
+        }
       });
     }
 
@@ -62,6 +67,10 @@ export class Settings {
       this.toggleSound.addEventListener('change', (e) => {
         saveSystem.updateSettings({ sound: e.target.checked });
         audioManager.updateVolumes();
+        if (e.target.checked) {
+          audioManager.ensureContext();
+          audioManager.playCollectCoin();
+        }
       });
     }
 
@@ -122,6 +131,13 @@ export class Settings {
   }
 
   show() {
+    const current = saveSystem.getSettings();
+    if (this.toggleMusic) this.toggleMusic.checked = current.music;
+    if (this.toggleSound) this.toggleSound.checked = current.sound;
+    if (this.toggleShake) this.toggleShake.checked = current.screenShake;
+    if (this.toggleCrt) this.toggleCrt.checked = current.crt;
+    if (this.toggleReducedMotion) this.toggleReducedMotion.checked = current.reducedMotion;
+
     if (this.modal) {
       this.modal.style.display = 'flex';
       this.modal.classList.remove('hidden');
