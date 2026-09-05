@@ -84,8 +84,25 @@ export class Menu {
 
     // How to play close
     if (this.btnCloseHow) {
-      this.btnCloseHow.addEventListener('click', () => this.hideHowToPlay());
+      this.btnCloseHow.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.hideHowToPlay();
+      });
     }
+
+    if (this.modalHow) {
+      this.modalHow.addEventListener('click', (e) => {
+        if (e.target === this.modalHow) {
+          this.hideHowToPlay();
+        }
+      });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Escape' && this.modalHow && !this.modalHow.classList.contains('hidden')) {
+        this.hideHowToPlay();
+      }
+    });
 
     // Intro advance / skip
     if (this.introScreen) {

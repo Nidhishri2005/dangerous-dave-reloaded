@@ -8,8 +8,25 @@ export class LevelSelect {
     this.btnClose = document.getElementById('btn-close-levelselect');
 
     if (this.btnClose) {
-      this.btnClose.addEventListener('click', () => this.hide());
+      this.btnClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.hide();
+      });
     }
+
+    if (this.modal) {
+      this.modal.addEventListener('click', (e) => {
+        if (e.target === this.modal) {
+          this.hide();
+        }
+      });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Escape' && this.modal && !this.modal.classList.contains('hidden')) {
+        this.hide();
+      }
+    });
   }
 
   show() {

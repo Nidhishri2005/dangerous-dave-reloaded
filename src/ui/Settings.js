@@ -30,8 +30,25 @@ export class Settings {
     this.applySettings(current);
 
     if (this.btnClose) {
-      this.btnClose.addEventListener('click', () => this.hide());
+      this.btnClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.hide();
+      });
     }
+
+    if (this.modal) {
+      this.modal.addEventListener('click', (e) => {
+        if (e.target === this.modal) {
+          this.hide();
+        }
+      });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Escape' && this.modal && !this.modal.classList.contains('hidden')) {
+        this.hide();
+      }
+    });
 
     if (this.toggleMusic) {
       this.toggleMusic.addEventListener('change', (e) => {

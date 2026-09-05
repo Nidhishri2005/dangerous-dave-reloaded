@@ -65,10 +65,23 @@ body {
   z-index: 10;
 }
 
+.hidden {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+.modal-backdrop.hidden {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 .screen.hidden {
   display: none !important;
-  opacity: 0;
-  pointer-events: none;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 #landing-page {
@@ -713,16 +726,26 @@ body {
 }
 
 .btn-close {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-size: 26px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: #fff;
+  font-size: 20px;
   cursor: pointer;
   line-height: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.15s ease;
 }
 
 .btn-close:hover {
+  background: var(--crimson);
+  border-color: #ff4d6d;
   color: #fff;
+  transform: scale(1.05);
 }
 
 .modal-header {
