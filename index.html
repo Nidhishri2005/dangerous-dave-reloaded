@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>DANGEROUS DAVE: RELOADED — A New Adventure Begins</title>
+  <meta name="description" content="A modern, fair, and responsive 2D retro platformer inspired by classic Dangerous Dave. Built with pure HTML5 Canvas and Web Audio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <div id="app" class="game-wrapper">
+    <!-- LANDING PAGE -->
+    <div id="landing-page" class="screen active">
+      <div class="landing-bg-effect"></div>
+      <div class="landing-content">
+        <div class="title-badge">RETRO PLATFORMER REBORN</div>
+        <h1 class="game-title">
+          <span class="title-main">DANGEROUS DAVE</span>
+          <span class="title-sub">RELOADED</span>
+        </h1>
+        <p class="tagline">"Explore. Survive. Collect."</p>
+        <p class="subtitle">A New Adventure Begins</p>
+
+        <div class="landing-actions">
+          <button id="btn-landing-play" class="btn btn-primary btn-large glow-pulse">
+            <span class="btn-icon">▶</span> PLAY NOW
+          </button>
+          <button id="btn-landing-levels" class="btn btn-secondary">
+            <span class="btn-icon">🗺️</span> LEVEL SELECT
+          </button>
+          <button id="btn-landing-how" class="btn btn-secondary">
+            <span class="btn-icon">❓</span> HOW TO PLAY
+          </button>
+          <button id="btn-landing-settings" class="btn btn-secondary">
+            <span class="btn-icon">⚙️</span> SETTINGS
+          </button>
+        </div>
+
+        <div class="landing-features">
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Responsive Movement</h3>
+            <p>Coyote time, jump buffering & variable jump height. Zero sluggish lag.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>Fair Hazards</h3>
+            <p>Telegraphed spikes, warning cues, no invisible instant-deaths.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🚩</div>
+            <h3>Fast Checkpoints</h3>
+            <p>Instant respawning. No tedious replay of cleared rooms.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💎</div>
+            <h3>Risk vs. Reward</h3>
+            <p>Safe clear paths + high-risk secret chambers for master treasure hunters.</p>
+          </div>
+        </div>
+
+        <div class="landing-footer">
+          <span>Dangerous Dave: Reloaded &bull; Original Modern Platformer &bull; Pure Canvas & Web Audio</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKIPPABLE INTRO SCREEN -->
+    <div id="intro-screen" class="screen overlay-screen hidden">
+      <div class="intro-backdrop"></div>
+      <div class="intro-dialogue-box">
+        <div class="intro-portrait">
+          <canvas id="intro-portrait-canvas" width="64" height="64"></canvas>
+        </div>
+        <div class="intro-text-wrapper">
+          <div id="intro-text" class="intro-text"></div>
+          <div class="intro-prompt blink-text">PRESS [SPACE] OR TAP TO CONTINUE</div>
+        </div>
+      </div>
+      <button id="btn-skip-intro" class="btn btn-small btn-outline">SKIP INTRO [ESC]</button>
+    </div>
+
+    <!-- MAIN GAMEPLAY VIEWPORT -->
+    <div id="game-container" class="game-container hidden">
+      <!-- HUD HEADER -->
+      <div id="game-hud" class="game-hud">
+        <div class="hud-group">
+          <div class="hud-item health-display">
+            <span class="hud-label">HP</span>
+            <div id="hud-hearts" class="hearts-container">
+              <span class="heart full">❤️</span>
+              <span class="heart full">❤️</span>
+              <span class="heart full">❤️</span>
+            </div>
+          </div>
+          <div class="hud-item lives-display">
+            <span class="hud-label">LIVES</span>
+            <span id="hud-lives-val" class="hud-value">3</span>
+          </div>
+        </div>
+
+        <div class="hud-group hud-center">
+          <div class="hud-item level-display">
+            <span id="hud-level-val" class="hud-value-accent">LEVEL 1: TRAINING GROUNDS</span>
+          </div>
+          <div id="hud-powerup-bar" class="powerup-bar hidden">
+            <span id="hud-powerup-icon">⚡</span>
+            <span id="hud-powerup-name">SPEED</span>
+            <div class="powerup-meter">
+              <div id="hud-powerup-fill" class="powerup-meter-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hud-group hud-right">
+          <div class="hud-item score-display">
+            <span class="hud-label">SCORE</span>
+            <span id="hud-score-val" class="hud-value">000000</span>
+          </div>
+          <div class="hud-item treasure-display">
+            <span class="hud-label">TREASURE</span>
+            <span id="hud-treasure-val" class="hud-value">0/0</span>
+          </div>
+          <div class="hud-item timer-display">
+            <span class="hud-label">TIME</span>
+            <span id="hud-timer-val" class="hud-value">00:00</span>
+          </div>
+          <button id="btn-pause-toggle" class="btn-icon-hud" title="Pause Game (ESC)">⏸️</button>
+        </div>
+      </div>
+
+      <!-- CANVAS VIEWPORT -->
+      <div id="canvas-wrapper" class="canvas-wrapper">
+        <canvas id="game-canvas" width="960" height="540"></canvas>
+        <div id="scanline-overlay" class="scanline-effect"></div>
+        
+        <!-- DEATH BANNER / RESPAWN OVERLAY -->
+        <div id="death-overlay" class="death-overlay hidden">
+          <div class="death-content">
+            <h2 id="death-cause-text" class="death-cause">SPIKES GOT YOU!</h2>
+            <div class="death-countdown">
+              <span>RESPAWNING</span>
+              <div class="respawn-dots"><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTIFICATION TOAST -->
+        <div id="toast-notification" class="toast-notification hidden">
+          <span id="toast-message">CHECKPOINT ACTIVATED!</span>
+        </div>
+      </div>
+
+      <!-- ON-SCREEN MOBILE / TOUCH CONTROLS -->
+      <div id="mobile-controls" class="mobile-controls">
+        <div class="touch-group touch-left">
+          <button id="touch-btn-left" class="touch-btn" data-key="left" aria-label="Move Left">◀</button>
+          <button id="touch-btn-right" class="touch-btn" data-key="right" aria-label="Move Right">▶</button>
+        </div>
+        <div class="touch-group touch-right">
+          <button id="touch-btn-jump" class="touch-btn touch-btn-action" data-key="jump" aria-label="Jump">JUMP</button>
+          <button id="touch-btn-run" class="touch-btn touch-btn-secondary" data-key="run" aria-label="Run">RUN</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVEL COMPLETE MODAL -->
+    <div id="modal-level-complete" class="modal-backdrop hidden">
+      <div class="modal-card modal-victory">
+        <div class="modal-header">
+          <div class="trophy-icon">🏆</div>
+          <h2>LEVEL COMPLETE!</h2>
+          <p id="victory-level-name" class="victory-subtitle">Training Grounds</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-row">
+            <span>Clear Time:</span>
+            <strong id="stat-time">01:24</strong>
+          </div>
+          <div class="stat-row">
+            <span>Level Score:</span>
+            <strong id="stat-score">1,450</strong>
+          </div>
+          <div class="stat-row">
+            <span>Treasure Collected:</span>
+            <strong id="stat-treasure">12 / 14</strong>
+          </div>
+          <div class="stat-row">
+            <span>Enemies Defeated:</span>
+            <strong id="stat-enemies">5</strong>
+          </div>
+          <div class="stat-row">
+            <span>Secrets Found:</span>
+            <strong id="stat-secrets">1 / 1</strong>
+          </div>
+          <div class="stat-row">
+            <span>Damage Taken:</span>
+            <strong id="stat-damage">0 (PERFECT!)</strong>
+          </div>
+          <div class="stat-row highlight">
+            <span>Bonus Awarded:</span>
+            <strong id="stat-bonus">+500 PTS</strong>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-next-level" class="btn btn-primary glow-pulse">NEXT LEVEL ▶</button>
+          <button id="btn-replay-level" class="btn btn-secondary">REPLAY LEVEL 🔄</button>
+          <button id="btn-complete-levelselect" class="btn btn-secondary">LEVEL SELECT 🗺️</button>
+          <button id="btn-complete-menu" class="btn btn-outline">MAIN MENU</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME OVER MODAL -->
+    <div id="modal-game-over" class="modal-backdrop hidden">
+      <div class="modal-card modal-gameover">
+        <div class="skull-icon">💀</div>
+        <h2 class="gameover-title">GAME OVER</h2>
+        <p class="gameover-text">Dave's journey came to an end... but legends never give up!</p>
+        <div class="gameover-stats">
+          <div>Final Score: <span id="gameover-score">0</span></div>
+          <div>Level Reached: <span id="gameover-level">Level 1</span></div>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-retry-level" class="btn btn-primary glow-pulse">RETRY LEVEL 🔄</button>
+          <button id="btn-gameover-levelselect" class="btn btn-secondary">LEVEL SELECT 🗺️</button>
+          <button id="btn-gameover-menu" class="btn btn-outline">MAIN MENU</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAUSE MODAL -->
+    <div id="modal-pause" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <h2>GAME PAUSED</h2>
+        <div class="pause-stats">
+          <div>Level: <span id="pause-level-name">Level 1</span></div>
+          <div>Score: <span id="pause-score">0</span></div>
+          <div>Checkpoints: Active</div>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-pause-resume" class="btn btn-primary">RESUME (ESC)</button>
+          <button id="btn-pause-restart" class="btn btn-secondary">RESTART LEVEL</button>
+          <button id="btn-pause-settings" class="btn btn-secondary">SETTINGS</button>
+          <button id="btn-pause-menu" class="btn btn-outline">MAIN MENU</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVEL SELECT MODAL -->
+    <div id="modal-level-select" class="modal-backdrop hidden">
+      <div class="modal-card modal-wide">
+        <div class="modal-top">
+          <h2>SELECT MISSION</h2>
+          <button id="btn-close-levelselect" class="btn-close">&times;</button>
+        </div>
+        <div id="level-grid" class="level-grid">
+          <!-- Dynamically populated by LevelSelect.js -->
+        </div>
+        <div class="modal-footer-info">
+          <span>Complete levels to unlock the next challenge!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="modal-settings" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-top">
+          <h2>SETTINGS</h2>
+          <button id="btn-close-settings" class="btn-close">&times;</button>
+        </div>
+        <div class="settings-list">
+          <div class="setting-item">
+            <div class="setting-text">
+              <label for="setting-music">Music</label>
+              <small>Procedural retro chip background synth</small>
+            </div>
+            <input type="checkbox" id="setting-music" class="retro-toggle" checked />
+          </div>
+          <div class="setting-item">
+            <div class="setting-text">
+              <label for="setting-sound">Sound Effects</label>
+              <small>Synthesized jumping, items & combat audio</small>
+            </div>
+            <input type="checkbox" id="setting-sound" class="retro-toggle" checked />
+          </div>
+          <div class="setting-item">
+            <div class="setting-text">
+              <label for="setting-screenshake">Screen Shake</label>
+              <small>Camera impact effects on damage & explosions</small>
+            </div>
+            <input type="checkbox" id="setting-screenshake" class="retro-toggle" checked />
+          </div>
+          <div class="setting-item">
+            <div class="setting-text">
+              <label for="setting-crt">CRT Scanline Effect</label>
+              <small>Retro arcade monitor scanlines</small>
+            </div>
+            <input type="checkbox" id="setting-crt" class="retro-toggle" checked />
+          </div>
+          <div class="setting-item">
+            <div class="setting-text">
+              <label for="setting-reducedmotion">Reduced Motion</label>
+              <small>Accessibility mode: minimizes rapid shakes & flashes</small>
+            </div>
+            <input type="checkbox" id="setting-reducedmotion" class="retro-toggle" />
+          </div>
+        </div>
+        <div class="settings-danger-zone">
+          <button id="btn-reset-save" class="btn btn-danger">RESET PROGRESS & SCORES</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW TO PLAY MODAL -->
+    <div id="modal-how-to-play" class="modal-backdrop hidden">
+      <div class="modal-card modal-wide">
+        <div class="modal-top">
+          <h2>HOW TO PLAY</h2>
+          <button id="btn-close-how" class="btn-close">&times;</button>
+        </div>
+        <div class="how-to-grid">
+          <div class="how-section">
+            <h3>🕹️ KEYBOARD CONTROLS</h3>
+            <ul class="ctrl-list">
+              <li><kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd> : Walk Left / Right</li>
+              <li><kbd>SHIFT</kbd> or <kbd>Z</kbd> : Sprint / Faster Run</li>
+              <li><kbd>SPACE</kbd> / <kbd>W</kbd> / <kbd>↑</kbd> : Jump (Hold for higher jump)</li>
+              <li><kbd>ESC</kbd> or <kbd>P</kbd> : Pause Game</li>
+            </ul>
+          </div>
+          <div class="how-section">
+            <h3>📱 TOUCH / MOBILE</h3>
+            <ul class="ctrl-list">
+              <li>On-screen virtual D-pad buttons: <strong>LEFT</strong>, <strong>RIGHT</strong></li>
+              <li>Action buttons: <strong>JUMP</strong> and <strong>RUN</strong></li>
+              <li>Tap pause button on top-right anytime</li>
+            </ul>
+          </div>
+          <div class="how-section">
+            <h3>⚡ RESPONSIVE MECHANICS</h3>
+            <ul class="ctrl-list">
+              <li><strong>Coyote Time</strong>: You can still jump for a split-second after stepping off ledges!</li>
+              <li><strong>Jump Buffer</strong>: Press jump right before landing and you'll jump the instant you touch ground.</li>
+              <li><strong>Variable Jump</strong>: Tap lightly for a short hop, or hold down to soar higher.</li>
+            </ul>
+          </div>
+          <div class="how-section">
+            <h3>💎 ITEMS & POWER-UPS</h3>
+            <ul class="ctrl-list">
+              <li><strong>Coin (10)</strong>, <strong>Gem (50)</strong>, <strong>Chalice (100)</strong>, <strong>Secret Relic (250)</strong></li>
+              <li><strong>Shield (Blue Orb)</strong>: Protects from 1 incoming hit</li>
+              <li><strong>Speed Boost (Lightning)</strong>: 10 seconds of rapid sprint</li>
+              <li><strong>Double Jump (Wings)</strong>: 12 seconds of mid-air jumps</li>
+              <li><strong>Treasure Magnet (Horseshoe)</strong>: Pulls collectibles towards Dave!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
