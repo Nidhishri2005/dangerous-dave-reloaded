@@ -472,7 +472,22 @@ body {
 .hud-group {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
+}
+
+.hud-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(28, 34, 52, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+}
+
+.hud-pill .hud-icon {
+  font-size: 13px;
 }
 
 .hud-center {
@@ -677,63 +692,126 @@ body {
 }
 
 /* ========================================================
-   TOUCH / MOBILE CONTROLS
+   MODERN DASHBOARD CARDS & BADGES
    ======================================================== */
-.mobile-controls {
-  display: flex;
+.modern-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
   width: 100%;
-  max-width: 960px;
-  margin-top: 12px;
-  justify-content: space-between;
-  align-items: center;
-  touch-action: manipulation;
 }
 
-.touch-group {
-  display: flex;
-  gap: 12px;
-}
-
-.touch-btn {
-  width: 65px;
-  height: 65px;
+.modern-card {
+  background: rgba(22, 28, 44, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  background: rgba(28, 34, 52, 0.85);
-  border: 2px solid var(--border-color);
-  color: #fff;
-  font-family: var(--font-pixel);
-  font-size: 18px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.modern-card:hover {
+  border-color: rgba(0, 240, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+.modern-card-header {
   display: flex;
-  justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 0 #0f121d;
-  touch-action: manipulation;
+  gap: 8px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 8px;
 }
 
-.touch-btn:active, .touch-btn.active {
-  background: var(--cyan);
-  color: #000;
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #0f121d;
-}
-
-.touch-btn-action {
-  width: 90px;
-  background: linear-gradient(180deg, #ffd700 0%, #d49100 100%);
-  border-color: #ffe066;
-  color: #111;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.touch-btn-action:active, .touch-btn-action.active {
-  background: #fff;
-  color: #000;
-}
-
-.touch-btn-secondary {
-  width: 75px;
+.modern-card-header h4 {
+  font-family: var(--font-pixel);
   font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 1px;
+}
+
+.card-icon {
+  font-size: 18px;
+}
+
+.modern-key-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.key-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(10, 14, 24, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.key-pill kbd {
+  background: #192033;
+  border: 1px solid var(--border-color);
+  color: var(--gold);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+.key-pill span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-pixel);
+}
+
+.modern-badge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.item-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(10, 14, 24, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 15px;
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.item-badge:hover {
+  background: rgba(255, 204, 0, 0.1);
+  border-color: var(--gold);
+}
+
+.item-badge.powerup-badge {
+  border-color: rgba(0, 240, 255, 0.3);
+  background: rgba(0, 240, 255, 0.08);
+}
+
+.item-badge.powerup-badge:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan-glow);
+}
+
+.item-badge strong {
+  color: var(--gold);
+  font-family: var(--font-pixel);
+  font-size: 10px;
+}
+
+.badge-icon {
+  font-size: 15px;
 }
 
 /* ========================================================
@@ -1096,8 +1174,8 @@ kbd {
     <main class="arcade-cabinet">
       <!-- HUD HEADER -->
       <div id="game-hud" class="game-hud">
-        <div class="hud-group">
-          <div class="hud-item health-display">
+        <div class="hud-group hud-left">
+          <div class="hud-pill health-display" title="Health Points">
             <span class="hud-label">HP</span>
             <div id="hud-hearts" class="hearts-container">
               <span class="heart full">❤️</span>
@@ -1105,8 +1183,8 @@ kbd {
               <span class="heart full">❤️</span>
             </div>
           </div>
-          <div class="hud-item lives-display">
-            <span class="hud-label">LIVES</span>
+          <div class="hud-pill lives-display" title="Lives">
+            <span class="hud-icon">👤</span>
             <span id="hud-lives-val" class="hud-value">3</span>
           </div>
         </div>
@@ -1125,16 +1203,16 @@ kbd {
         </div>
 
         <div class="hud-group hud-right">
-          <div class="hud-item score-display">
-            <span class="hud-label">SCORE</span>
+          <div class="hud-pill score-display" title="Score">
+            <span class="hud-icon">🏆</span>
             <span id="hud-score-val" class="hud-value">000000</span>
           </div>
-          <div class="hud-item treasure-display">
-            <span class="hud-label">TREASURE</span>
+          <div class="hud-pill treasure-display" title="Treasure">
+            <span class="hud-icon">💎</span>
             <span id="hud-treasure-val" class="hud-value">0/0</span>
           </div>
-          <div class="hud-item timer-display">
-            <span class="hud-label">TIME</span>
+          <div class="hud-pill timer-display" title="Time">
+            <span class="hud-icon">⏱️</span>
             <span id="hud-timer-val" class="hud-value">00:00</span>
           </div>
           <button id="btn-quick-sound" class="btn-icon-hud" title="Toggle Sound / Unmute">🔊</button>
@@ -1182,69 +1260,46 @@ kbd {
           <span class="btn-icon">🔄</span> RESTART
         </button>
       </div>
-
-      <!-- ON-SCREEN MOBILE / TOUCH CONTROLS -->
-      <div id="mobile-controls" class="mobile-controls">
-        <div class="touch-group touch-left">
-          <button id="touch-btn-left" class="touch-btn" data-key="left" aria-label="Move Left">◀</button>
-          <button id="touch-btn-right" class="touch-btn" data-key="right" aria-label="Move Right">▶</button>
-        </div>
-        <div class="touch-group touch-right">
-          <button id="touch-btn-jump" class="touch-btn touch-btn-action" data-key="jump" aria-label="Jump">JUMP</button>
-          <button id="touch-btn-run" class="touch-btn touch-btn-secondary" data-key="run" aria-label="Run">RUN</button>
-        </div>
-      </div>
     </main>
 
-    <!-- ARCADE GUIDE SECTIONS BELOW CANVAS -->
-    <section class="arcade-guide">
-      <div class="landing-features">
-        <div class="feature-card">
-          <div class="feature-icon">⚡</div>
-          <h3>Responsive Movement</h3>
-          <p>Coyote time (120ms), jump buffering & variable jump height. Snappy & fair.</p>
+    <!-- MODERN GAME GUIDE BELOW CABINET -->
+    <section class="arcade-guide modern-guide">
+      <div class="modern-info-grid">
+        <!-- CONTROLS CARD -->
+        <div class="modern-card controls-card">
+          <div class="modern-card-header">
+            <span class="card-icon">🎮</span>
+            <h4>CONTROLS</h4>
+          </div>
+          <div class="modern-key-pills">
+            <div class="key-pill"><kbd>A</kbd> <kbd>D</kbd> or <kbd>←</kbd> <kbd>→</kbd> <span>MOVE</span></div>
+            <div class="key-pill"><kbd>SPACE</kbd> or <kbd>W</kbd> <span>JUMP</span></div>
+            <div class="key-pill"><kbd>SHIFT</kbd> or <kbd>Z</kbd> <span>RUN</span></div>
+            <div class="key-pill"><kbd>ESC</kbd> or <kbd>P</kbd> <span>PAUSE</span></div>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🛡️</div>
-          <h3>Fair Hazards</h3>
-          <p>Telegraphed spikes, warning indicators, no invisible instant-deaths.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🚩</div>
-          <h3>Fast Checkpoints</h3>
-          <p>Instant respawning. No tedious replay of cleared rooms.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">💎</div>
-          <h3>Risk vs. Reward</h3>
-          <p>Safe clear paths + high-risk secret chambers for master treasure hunters.</p>
-        </div>
-      </div>
 
-      <div class="how-to-grid">
-        <div class="how-section">
-          <h3>🕹️ KEYBOARD CONTROLS</h3>
-          <ul class="ctrl-list">
-            <li><kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd> : Walk Left / Right</li>
-            <li><kbd>SHIFT</kbd> or <kbd>Z</kbd> : Sprint / Faster Run</li>
-            <li><kbd>SPACE</kbd> / <kbd>W</kbd> / <kbd>↑</kbd> : Jump (Hold for higher jump)</li>
-            <li><kbd>ESC</kbd> or <kbd>P</kbd> : Pause Game</li>
-          </ul>
-        </div>
-        <div class="how-section">
-          <h3>💎 ITEMS & POWER-UPS</h3>
-          <ul class="ctrl-list">
-            <li><strong>Coin (10)</strong>, <strong>Gem (50)</strong>, <strong>Chalice (100)</strong>, <strong>Secret Relic (250)</strong></li>
-            <li><strong>Shield (Blue Orb)</strong>: Absorbs 1 incoming hit</li>
-            <li><strong>Speed Boost (Lightning)</strong>: 10s rapid sprint</li>
-            <li><strong>Double Jump (Wings)</strong>: 12s mid-air jumping</li>
-            <li><strong>Treasure Magnet (Horseshoe)</strong>: Pulls nearby loot!</li>
-          </ul>
+        <!-- ITEMS & POWER-UPS CARD -->
+        <div class="modern-card items-card">
+          <div class="modern-card-header">
+            <span class="card-icon">💎</span>
+            <h4>POWER-UPS & LOOT</h4>
+          </div>
+          <div class="modern-badge-grid">
+            <span class="item-badge" title="Coin: 10 pts"><span class="badge-icon">🪙</span> Coin <strong>+10</strong></span>
+            <span class="item-badge" title="Gem: 50 pts"><span class="badge-icon">💎</span> Gem <strong>+50</strong></span>
+            <span class="item-badge" title="Chalice: 100 pts"><span class="badge-icon">🏆</span> Chalice <strong>+100</strong></span>
+            <span class="item-badge" title="Secret: 250 pts"><span class="badge-icon">🔮</span> Relic <strong>+250</strong></span>
+            <span class="item-badge powerup-badge" title="Absorbs 1 Hit"><span class="badge-icon">🛡️</span> Shield</span>
+            <span class="item-badge powerup-badge" title="10s Rapid Sprint"><span class="badge-icon">⚡</span> Speed</span>
+            <span class="item-badge powerup-badge" title="Mid-Air Jump"><span class="badge-icon">🪽</span> Air Jump</span>
+            <span class="item-badge powerup-badge" title="Pulls Nearby Loot"><span class="badge-icon">🧲</span> Magnet</span>
+          </div>
         </div>
       </div>
 
       <div class="landing-footer">
-        <span>Dangerous Dave: Reloaded &bull; Original Modern Platformer &bull; Pure Canvas & Web Audio</span>
+        <span>Dangerous Dave: Reloaded &bull; Pure Canvas & Web Audio &bull; v1.2</span>
       </div>
     </section>
 

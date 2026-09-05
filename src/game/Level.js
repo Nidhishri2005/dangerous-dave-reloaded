@@ -193,26 +193,6 @@ export class Level {
         renderer.drawEnemy(ctx, e, offset.x, offset.y);
       }
     }
-
-    // Draw Tutorial Hints (signs/floating cues)
-    for (const h of this.hints) {
-      const rx = Math.round(h.x - offset.x);
-      const ry = Math.round(h.y - offset.y);
-      if (rx > -150 && rx < viewW + 150) {
-        ctx.save();
-        ctx.fillStyle = 'rgba(19, 23, 34, 0.85)';
-        ctx.strokeStyle = '#00f0ff';
-        ctx.lineWidth = 1.5;
-        const tw = h.text.length * 7 + 16;
-        ctx.fillRect(rx - tw / 2, ry - 14, tw, 22);
-        ctx.strokeRect(rx - tw / 2, ry - 14, tw, 22);
-        ctx.font = '9px "Press Start 2P", monospace';
-        ctx.fillStyle = '#00f0ff';
-        ctx.textAlign = 'center';
-        ctx.fillText(h.text, rx, ry + 2);
-        ctx.restore();
-      }
-    }
   }
 }
 
