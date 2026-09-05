@@ -193,6 +193,7 @@ export class Level {
         renderer.drawEnemy(ctx, e, offset.x, offset.y);
       }
     }
+
   }
 }
 
