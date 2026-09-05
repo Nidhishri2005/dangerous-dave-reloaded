@@ -379,8 +379,55 @@ body {
 }
 
 /* ========================================================
-   GAME CONTAINER & HUD
+   ARCADE CABINET & GAME WEBSITE LAYOUT
    ======================================================== */
+.arcade-header {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.arcade-cabinet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 960px;
+  z-index: 10;
+}
+
+.arcade-deck {
+  width: 100%;
+  max-width: 960px;
+  margin-top: 14px;
+  background: rgba(19, 23, 34, 0.95);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+}
+
+.arcade-guide {
+  width: 100%;
+  max-width: 960px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  z-index: 5;
+}
+
 .game-container {
   position: relative;
   display: flex;

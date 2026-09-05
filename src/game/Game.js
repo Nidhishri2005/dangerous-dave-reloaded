@@ -51,7 +51,11 @@ export class Game {
 
     this.lastTime = 0;
     this.accumulator = 0;
-    this.fixedDt = 1 / 60; // 60 FPS fixed physics step
+    this.canvas.addEventListener('click', () => {
+      if (this.state === 'MENU') {
+        this.loadLevel(1);
+      }
+    });
 
     this.loop = this.loop.bind(this);
     requestAnimationFrame(this.loop);
@@ -133,6 +137,11 @@ export class Game {
       if (this.state === 'PLAYING' || this.state === 'PAUSED') {
         this.togglePause();
       }
+    }
+
+    // Start game on space press in title screen
+    if (this.state === 'MENU' && inputManager.wasJumpPressed()) {
+      this.loadLevel(1);
     }
 
     if (this.state === 'PLAYING') {
@@ -437,9 +446,119 @@ export class Game {
     }, 1000);
   }
 
+  drawTitleScreen() {
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    const t = renderer.animTimer;
+
+    // Rich retro background
+    const bgGrad = this.ctx.createLinearGradient(0, 0, 0, h);
+    bgGrad.addColorStop(0, '#0c0f1d');
+    bgGrad.addColorStop(0.6, '#181b30');
+    bgGrad.addColorStop(1, '#080a12');
+    this.ctx.fillStyle = bgGrad;
+    this.ctx.fillRect(0, 0, w, h);
+
+    // Distant cyber grid
+    this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.08)';
+    this.ctx.lineWidth = 1;
+    const gridShift = (t * 20) % 32;
+    for (let x = -gridShift; x < w; x += 32) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, 0);
+      this.ctx.lineTo(x, h);
+      this.ctx.stroke();
+    }
+    for (let y = 0; y < h; y += 32) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, y);
+      this.ctx.lineTo(w, y);
+      this.ctx.stroke();
+    }
+
+    // Floating gems
+    const bob1 = Math.sin(t * 3) * 10;
+    const bob2 = Math.cos(t * 2.5) * 8;
+    renderer.drawCollectible(this.ctx, { x: 140, y: 160 + bob1, width: 18, height: 18, type: 'gem' }, 0, 0);
+    renderer.drawCollectible(this.ctx, { x: w - 160, y: 160 + bob2, width: 18, height: 18, type: 'treasure' }, 0, 0);
+    renderer.drawCollectible(this.ctx, { x: 180, y: 320 + bob2, width: 16, height: 16, type: 'coin' }, 0, 0);
+    renderer.drawCollectible(this.ctx, { x: w - 200, y: 320 + bob1, width: 22, height: 22, type: 'secret' }, 0, 0);
+
+    // Title text
+    this.ctx.save();
+    this.ctx.textAlign = 'center';
+
+    // Badge
+    this.ctx.font = '10px "Press Start 2P", monospace';
+    this.ctx.fillStyle = '#00f0ff';
+    this.ctx.fillText('★ 2D RETRO PLATFORMER REBORN ★', w / 2, 85);
+
+    // Main Title
+    this.ctx.font = '34px "Press Start 2P", monospace';
+    this.ctx.fillStyle = '#000000';
+    this.ctx.fillText('DANGEROUS DAVE', w / 2 + 4, 140 + 4);
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.fillText('DANGEROUS DAVE', w / 2, 140);
+
+    // Subtitle
+    this.ctx.font = '24px "Press Start 2P", monospace';
+    this.ctx.fillStyle = '#000000';
+    this.ctx.fillText('RELOADED', w / 2 + 3, 185 + 3);
+    this.ctx.fillStyle = '#ffcc00';
+    this.ctx.fillText('RELOADED', w / 2, 185);
+
+    // Tagline
+    this.ctx.font = '12px "Press Start 2P", monospace';
+    this.ctx.fillStyle = '#8c9bb5';
+    this.ctx.fillText('A NEW ADVENTURE BEGINS', w / 2, 220);
+
+    // Animated Dave in center
+    const daveDummy = {
+      x: w / 2 - 10,
+      y: 270,
+      width: 20,
+      height: 28,
+      facing: 1,
+      isGrounded: true,
+      vx: 60,
+      vy: 0,
+      runAnimTime: t,
+      invulnerableTimer: 0,
+      hasPowerUp: () => false,
+    };
+    renderer.drawPlayer(this.ctx, daveDummy, 0, 0);
+
+    // Platform under Dave
+    this.ctx.fillStyle = '#455a64';
+    this.ctx.fillRect(w / 2 - 80, 305, 160, 10);
+    this.ctx.fillStyle = '#ffd700';
+    this.ctx.fillRect(w / 2 - 80, 305, 160, 2);
+
+    // Pulsing Start Prompt
+    const pulse = Math.floor(t * 3) % 2 === 0;
+    if (pulse) {
+      this.ctx.font = '14px "Press Start 2P", monospace';
+      this.ctx.fillStyle = '#00e676';
+      this.ctx.fillText('▶ CLICK OR PRESS SPACE TO PLAY ◀', w / 2, 380);
+    }
+
+    // Controls footer hint
+    this.ctx.font = '10px "Press Start 2P", monospace';
+    this.ctx.fillStyle = '#8c9bb5';
+    this.ctx.fillText('CONTROLS: ARROWS / WASD TO MOVE • SPACE TO JUMP', w / 2, 450);
+    this.ctx.fillText('COLLECT TREASURE • REACH THE VAULT PORTAL', w / 2, 480);
+
+    this.ctx.restore();
+  }
+
   // --- DRAW ---
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    if (this.state === 'MENU') {
+      this.drawTitleScreen();
+      return;
+    }
 
     if (this.level) {
       // Draw Level, Tiles, Background, Platforms, Checkpoints, Items, Enemies

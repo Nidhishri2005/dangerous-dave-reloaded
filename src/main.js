@@ -74,6 +74,47 @@ function init() {
     });
   }
 
+  // Arcade Deck Control Buttons
+  const btnArcadePlay = document.getElementById('btn-arcade-play');
+  if (btnArcadePlay) {
+    btnArcadePlay.addEventListener('click', () => {
+      unlockAudio();
+      game.loadLevel(1);
+    });
+  }
+
+  const btnArcadeLevels = document.getElementById('btn-arcade-levels');
+  if (btnArcadeLevels) {
+    btnArcadeLevels.addEventListener('click', () => {
+      unlockAudio();
+      levelSelect.show();
+    });
+  }
+
+  const btnArcadeSettings = document.getElementById('btn-arcade-settings');
+  if (btnArcadeSettings) {
+    btnArcadeSettings.addEventListener('click', () => {
+      unlockAudio();
+      settings.show();
+    });
+  }
+
+  const btnArcadeHow = document.getElementById('btn-arcade-how');
+  if (btnArcadeHow) {
+    btnArcadeHow.addEventListener('click', () => {
+      unlockAudio();
+      menu.showHowToPlay();
+    });
+  }
+
+  const btnArcadeRestart = document.getElementById('btn-arcade-restart');
+  if (btnArcadeRestart) {
+    btnArcadeRestart.addEventListener('click', () => {
+      unlockAudio();
+      game.restartCurrentLevel();
+    });
+  }
+
   // Handle window resizing / DPI crispness if needed
   window.addEventListener('resize', () => {
     // Keep canvas 960x540 internal buffer, CSS handles presentation
