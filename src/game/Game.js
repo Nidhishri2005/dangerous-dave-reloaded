@@ -52,7 +52,14 @@ export class Game {
     this.lastTime = 0;
     this.accumulator = 0;
     this.fixedDt = 1 / 60; // 60 FPS fixed physics step
-    this.canvas.addEventListener('click', () => {
+
+    if (typeof window !== 'undefined') {
+      window.game = this;
+    }
+
+    this.canvas.addEventListener('pointerdown', () => {
+      this.canvas.focus();
+      audioManager.initContext();
       if (this.state === 'MENU') {
         this.loadLevel(1);
       }
@@ -140,9 +147,18 @@ export class Game {
       }
     }
 
-    // Start game on space press in title screen
-    if (this.state === 'MENU' && inputManager.wasJumpPressed()) {
-      this.loadLevel(1);
+    // Start game on ANY movement or action key press while on title screen
+    if (this.state === 'MENU') {
+      if (
+        inputManager.isLeft() ||
+        inputManager.isRight() ||
+        inputManager.isJump() ||
+        inputManager.wasJumpPressed() ||
+        inputManager.isRun()
+      ) {
+        audioManager.initContext();
+        this.loadLevel(1);
+      }
     }
 
     if (this.state === 'PLAYING') {

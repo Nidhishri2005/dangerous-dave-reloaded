@@ -77,6 +77,27 @@ function init() {
     pauseMenu.show(levelName, score);
   };
 
+  // Quick sound toggle in HUD
+  const btnQuickSound = document.getElementById('btn-quick-sound');
+  if (btnQuickSound) {
+    btnQuickSound.addEventListener('click', () => {
+      btnQuickSound.blur();
+      canvas.focus();
+      audioManager.ensureContext();
+      const current = saveSystem.getSettings();
+      const nextState = !current.sound;
+      saveSystem.updateSettings({ sound: nextState, music: nextState });
+      audioManager.updateVolumes();
+      btnQuickSound.textContent = nextState ? '🔊' : '🔇';
+      if (nextState) {
+        audioManager.playCollectCoin();
+        audioManager.startBGM(game.level ? game.level.theme : 'adventure');
+      } else {
+        audioManager.stopBGM();
+      }
+    });
+  }
+
   // Pause button in HUD
   const btnPauseToggle = document.getElementById('btn-pause-toggle');
   if (btnPauseToggle) {

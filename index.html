@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>DANGEROUS DAVE: RELOADED — A New Adventure Begins</title>
   <meta name="description" content="A modern, fair, and responsive 2D retro platformer inspired by classic Dangerous Dave. Built with pure HTML5 Canvas and Web Audio." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -677,19 +680,13 @@ body {
    TOUCH / MOBILE CONTROLS
    ======================================================== */
 .mobile-controls {
-  display: none;
+  display: flex;
   width: 100%;
   max-width: 960px;
   margin-top: 12px;
   justify-content: space-between;
   align-items: center;
   touch-action: manipulation;
-}
-
-@media (pointer: coarse), (max-width: 850px) {
-  .mobile-controls {
-    display: flex;
-  }
 }
 
 .touch-group {
@@ -1086,7 +1083,7 @@ kbd {
   <div id="app" class="game-wrapper">
     <!-- ARCADE HEADER -->
     <header class="arcade-header">
-      <div class="title-badge">★ RETRO PLATFORMER REBORN ★</div>
+      <div class="title-badge">★ RETRO PLATFORMER REBORN • v1.2 LIVE ★</div>
       <h1 class="game-title">
         <span class="title-main">DANGEROUS DAVE</span>
         <span class="title-sub">RELOADED</span>
@@ -1140,6 +1137,7 @@ kbd {
             <span class="hud-label">TIME</span>
             <span id="hud-timer-val" class="hud-value">00:00</span>
           </div>
+          <button id="btn-quick-sound" class="btn-icon-hud" title="Toggle Sound / Unmute">🔊</button>
           <button id="btn-pause-toggle" class="btn-icon-hud" title="Pause Game (ESC)">⏸️</button>
         </div>
       </div>
@@ -1407,6 +1405,11 @@ kbd {
             </div>
             <input type="checkbox" id="setting-reducedmotion" class="retro-toggle" />
           </div>
+        <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
+          <button id="btn-test-audio" class="btn btn-primary btn-small">
+            🔊 TEST SOUND & MUSIC NOW
+          </button>
+          <small style="text-align: center; color: var(--gold); font-size: 13px;">Click to test sound effects & music output</small>
         </div>
         <div class="settings-danger-zone">
           <button id="btn-reset-save" class="btn btn-danger">RESET PROGRESS & SCORES</button>

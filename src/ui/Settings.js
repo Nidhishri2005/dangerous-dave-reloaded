@@ -13,6 +13,7 @@ export class Settings {
     this.toggleCrt = document.getElementById('setting-crt');
     this.toggleReducedMotion = document.getElementById('setting-reducedmotion');
     this.btnResetSave = document.getElementById('btn-reset-save');
+    this.btnTestAudio = document.getElementById('btn-test-audio');
     this.scanlineOverlay = document.getElementById('scanline-overlay');
 
     this.init();
@@ -91,6 +92,18 @@ export class Settings {
       this.toggleReducedMotion.addEventListener('change', (e) => {
         saveSystem.updateSettings({ reducedMotion: e.target.checked });
         this.updateReducedMotion(e.target.checked);
+      });
+    }
+
+    if (this.btnTestAudio) {
+      this.btnTestAudio.addEventListener('click', () => {
+        audioManager.ensureContext();
+        audioManager.playTone(523.25, 'square', 0.14, 0.45);
+        setTimeout(() => audioManager.playTone(659.25, 'square', 0.14, 0.45), 100);
+        setTimeout(() => audioManager.playTone(783.99, 'square', 0.25, 0.5), 200);
+        if (saveSystem.getSettings().music) {
+          audioManager.startBGM(audioManager.currentTrack || 'adventure');
+        }
       });
     }
 

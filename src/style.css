@@ -666,19 +666,13 @@ body {
    TOUCH / MOBILE CONTROLS
    ======================================================== */
 .mobile-controls {
-  display: none;
+  display: flex;
   width: 100%;
   max-width: 960px;
   margin-top: 12px;
   justify-content: space-between;
   align-items: center;
   touch-action: manipulation;
-}
-
-@media (pointer: coarse), (max-width: 850px) {
-  .mobile-controls {
-    display: flex;
-  }
 }
 
 .touch-group {
