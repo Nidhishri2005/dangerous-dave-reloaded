@@ -9,3 +9,4 @@ export class PowerUp {
     this.collected = false;
   }
 }
+

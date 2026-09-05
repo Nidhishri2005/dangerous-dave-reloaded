@@ -52,3 +52,4 @@ export class PauseMenu {
     if (this.modal) this.modal.classList.add('hidden');
   }
 }
+

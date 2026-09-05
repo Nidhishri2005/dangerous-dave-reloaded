@@ -290,3 +290,4 @@ export class Menu {
     if (this.modalGameOver) this.modalGameOver.classList.add('hidden');
   }
 }
+

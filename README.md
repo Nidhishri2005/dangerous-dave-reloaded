@@ -207,3 +207,4 @@ dangerous-dave-reloaded/
 ## 📜 License & Originality Notice
 
 This game is an original creation developed as a modern tribute to retro adventure platformers. It contains no copyrighted sprites, audio recordings, level maps, or trade dress from any proprietary franchises. All code, graphics routines, and procedural audio synthesis are original works.
+

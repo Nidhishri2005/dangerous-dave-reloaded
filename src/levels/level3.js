@@ -65,3 +65,4 @@ export const level3 = {
     { x: 1020, y: 280, width: 64, height: 14, startX: 1000, startY: 280, endX: 1150, endY: 280, speed: 55 },
   ],
 };
+

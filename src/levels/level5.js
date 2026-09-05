@@ -67,3 +67,4 @@ export const level5 = {
     { x: 1180, y: 320, width: 64, height: 14, startX: 1160, startY: 320, endX: 1280, endY: 320, speed: 60 },
   ],
 };
+

@@ -456,3 +456,4 @@ export class Game {
     this.particles.draw(this.ctx, offset.x, offset.y);
   }
 }
+

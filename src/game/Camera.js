@@ -87,3 +87,4 @@ export class Camera {
     this.shakeIntensity = 0;
   }
 }
+

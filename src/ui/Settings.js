@@ -112,3 +112,4 @@ export class Settings {
     if (this.modal) this.modal.classList.add('hidden');
   }
 }
+

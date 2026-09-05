@@ -236,3 +236,4 @@ export class Player {
     this.vy = 0;
   }
 }
+
